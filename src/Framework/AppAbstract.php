@@ -99,5 +99,6 @@ abstract class AppAbstract
 
         $this->container->setParameter('db_config', $config['db']);
         $this->container->setParameter('routes_path', $config['routes']);
+        $this->container->setParameter('view', $config['view']);
     }
 }

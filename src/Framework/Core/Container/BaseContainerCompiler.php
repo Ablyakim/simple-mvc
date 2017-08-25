@@ -20,14 +20,56 @@ class BaseContainerCompiler implements CompilerInterface
      */
     public function compile(ContainerBuilder $container)
     {
-        $container->register('event_dispatcher', EventDispatcher::class);
+        $this->registerEventListener($container);
+        $this->registerRouterLoader($container);
+        $this->registerViewComponent($container);
+        $this->registerControllerListener($container);
 
-        $container->register('route_loader', RouterLoader::class)
-            ->addArgument('%routes_path%');
+    }
 
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerControllerListener(ContainerBuilder $container)
+    {
         $container->register('controller_listener', RouterListener::class)
             ->addArgument(new Reference('route_loader'))
             ->addArgument(new Reference('service_container'))
-            ->addTag('event_listener', ['event' => EventNames::REQUEST_EVENT, 'method' => 'processRequest']);
+            ->addTag(
+                'event_listener',
+                ['event' => EventNames::REQUEST_EVENT, 'method' => 'processRequest']
+            );
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerEventListener(ContainerBuilder $container)
+    {
+        $container->register('event_dispatcher', EventDispatcher::class);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerRouterLoader(ContainerBuilder $container)
+    {
+        $container->register('route_loader', RouterLoader::class)
+            ->addArgument('%routes_path%');
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerViewComponent(ContainerBuilder $container)
+    {
+        $viewParams = $container->getParameter('view');
+
+        $container->register('twig.loader_file_system', \Twig_Loader_Filesystem::class)
+            ->addArgument($viewParams['template_dir']);
+
+        $container->register('twig.env', \Twig_Environment::class)
+            ->addArgument(new Reference('twig.loader_file_system'))
+            ->addArgument(['cache' => $viewParams['cache_dir']]);
     }
 }

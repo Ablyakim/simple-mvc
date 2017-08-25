@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use Framework\Core\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -11,8 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IndexController extends AbstractController
 {
-    public function indexAction()
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function indexAction(Request $request)
     {
-        return new Response('Hello world');
+        return $this->render('index/index.html.twig');
     }
 }
