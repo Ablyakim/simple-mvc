@@ -1,0 +1,6 @@
+Order Deny,Allow
+Allow from All
+
+RewriteEngine on
+
+RewriteRule . index.php
