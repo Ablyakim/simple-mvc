@@ -35,7 +35,7 @@ class AbstractController
     {
         /** @var \Twig_Environment $twig */
         $twig = $this->container->get('twig.env');
-        $template = $twig->render('index/index.html.twig');
+        $template = $twig->render($template, $context);
 
         return new Response($template);
     }

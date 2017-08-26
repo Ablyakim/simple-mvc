@@ -4,6 +4,8 @@ namespace Framework\Core\Container;
 
 use Framework\Core\EventListener\RouterListener;
 use Framework\Core\Route\RouterLoader;
+use Framework\Db\ConnectionProxy;
+use Framework\Db\Query\QueryBuilder;
 use Framework\Di\CompilerInterface;
 use Framework\EventDispatcher\EventDispatcher;
 use Framework\EventNames;
@@ -24,7 +26,7 @@ class BaseContainerCompiler implements CompilerInterface
         $this->registerRouterLoader($container);
         $this->registerViewComponent($container);
         $this->registerControllerListener($container);
-
+        $this->registerDbConnection($container);
     }
 
     /**
@@ -71,5 +73,17 @@ class BaseContainerCompiler implements CompilerInterface
         $container->register('twig.env', \Twig_Environment::class)
             ->addArgument(new Reference('twig.loader_file_system'))
             ->addArgument(['cache' => $viewParams['cache_dir']]);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerDbConnection(ContainerBuilder $container)
+    {
+        $container->register('db', ConnectionProxy::class)
+            ->addArgument('%db_config%');
+
+        $container->register('query_builder', QueryBuilder::class)
+            ->addArgument(new Reference('db'));
     }
 }
