@@ -34,13 +34,21 @@ class TaskRepository
 
         $qb->select('*')
             ->from('task')
-            ->andWhere('id = :id')
-            ->setParameter('id', 1)
             ->setLimit(10);
 
-        var_dump($this->db->executeByQueryBuilder($qb)->fetchAll());
-        exit;
-        return $this->db->query('SELECT * FROM `task` LIMIT 50')
-            ->fetchAll();
+        return $this->db->executeByQueryBuilder($qb)->fetchAll();
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function getAllQueryBuilder()
+    {
+        $qb = new QueryBuilder();
+
+        $qb->select('*')
+            ->from('task');
+
+        return $qb;
     }
 }

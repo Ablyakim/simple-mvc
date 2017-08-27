@@ -8,17 +8,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class IndexController
+ * Class PageNotFoundController
  */
-class IndexController extends AbstractController
+class PageNotFoundController extends AbstractController
 {
     /**
      * @param Request $request
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function executeAction(Request $request)
     {
-        return $this->render('index/index.html.twig');
+        return new Response('Page not found', 404);
     }
 }

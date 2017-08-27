@@ -2,8 +2,11 @@
 
 namespace Framework\Core\EventListener;
 
+use Framework\Core\Controller\ControllerCallerTrait;
 use Framework\Core\Event\RequestEvent;
+use Framework\Core\Exception\NoRouteException;
 use Framework\Core\Route\RouterLoader;
+use Framework\Di\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -14,8 +17,10 @@ use Symfony\Component\Routing\RequestContext;
 /**
  * Class RouterListener
  */
-class RouterListener
+class RouterListener implements ContainerAwareInterface
 {
+    use ControllerCallerTrait;
+
     /**
      * @var RouterLoader
      */
@@ -38,7 +43,17 @@ class RouterListener
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
      * @param RequestEvent $requestEvent
+     *
+     * @throws NoRouteException
      */
     public function processRequest(RequestEvent $requestEvent)
     {
@@ -58,26 +73,9 @@ class RouterListener
 
             $requestEvent->setResponse($response);
         } catch (ResourceNotFoundException $resourceNotFoundException) {
-
+            throw NoRouteException::createFromOriginalException($resourceNotFoundException);
         } catch (MethodNotAllowedException $methodNotAllowedException) {
-
+            throw NoRouteException::createFromOriginalException($methodNotAllowedException);
         }
-    }
-
-    /**
-     * @param $parameters
-     * @param $request
-     *
-     * @return mixed
-     */
-    protected function callControllerByParams($parameters, $request)
-    {
-        // move to some factory
-        $controllerInstance = new $parameters['_controller']($this->container);
-
-        return call_user_func_array(
-            [$controllerInstance, sprintf('%sAction', $parameters['action'])],
-            [$request]
-        );
     }
 }

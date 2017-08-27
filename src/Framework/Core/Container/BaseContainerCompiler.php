@@ -2,6 +2,7 @@
 
 namespace Framework\Core\Container;
 
+use Framework\Core\EventListener\NoRouteListener;
 use Framework\Core\EventListener\RouterListener;
 use Framework\Core\Route\RouterLoader;
 use Framework\Db\ConnectionProxy;
@@ -27,6 +28,7 @@ class BaseContainerCompiler implements CompilerInterface
         $this->registerViewComponent($container);
         $this->registerControllerListener($container);
         $this->registerDbConnection($container);
+        $this->registerExceptionListener($container);
     }
 
     /**
@@ -40,6 +42,19 @@ class BaseContainerCompiler implements CompilerInterface
             ->addTag(
                 'event_listener',
                 ['event' => EventNames::REQUEST_EVENT, 'method' => 'processRequest']
+            );
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerExceptionListener(ContainerBuilder $container)
+    {
+        $container->register('exception_listener', NoRouteListener::class)
+            ->addArgument(new Reference('service_container'))
+            ->addTag(
+                'event_listener',
+                ['event' => EventNames::EXCEPTION_EVENT, 'method' => 'onAppException', 'priority' => -999]
             );
     }
 
@@ -71,8 +86,9 @@ class BaseContainerCompiler implements CompilerInterface
             ->addArgument($viewParams['template_dir']);
 
         $container->register('twig.env', \Twig_Environment::class)
-            ->addArgument(new Reference('twig.loader_file_system'))
-            ->addArgument(['cache' => $viewParams['cache_dir']]);
+            ->addArgument(new Reference('twig.loader_file_system'));
+        //enable in production mode
+//            ->addArgument(['cache' => $viewParams['cache_dir']]);
     }
 
     /**

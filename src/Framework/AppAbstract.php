@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use Framework\Core\Event\ExceptionEvent;
 use Framework\Core\Event\RequestEvent;
 use Framework\Di\CompilerInterface;
 use Framework\EventDispatcher\EventDispatcherInterface;
@@ -42,12 +43,14 @@ abstract class AppAbstract
 
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get('event_dispatcher');
-
-        $requestEvent = new RequestEvent($request);
-        //@see Framework\Core\EventListener\RouterListener::processRequest
-        $dispatcher->dispatch(EventNames::REQUEST_EVENT, $requestEvent);
-
-        return $requestEvent->getResponse();
+        try {
+            $requestEvent = new RequestEvent($request);
+            //@see Framework\Core\EventListener\RouterListener::processRequest
+            $dispatcher->dispatch(EventNames::REQUEST_EVENT, $requestEvent);
+            return $requestEvent->getResponse();
+        } catch (\Exception $e) {
+            return $this->handleException($request, $e);
+        }
     }
 
     /**
@@ -91,14 +94,40 @@ abstract class AppAbstract
     }
 
     /**
+     * @param Request $request
+     * @param \Exception $e
+     *
+     * @return Response
+     *
+     * @throws \Exception
+     */
+    protected function handleException(Request $request, \Exception $e)
+    {
+        $event = new ExceptionEvent($request, $e);
+
+        /** @var EventDispatcherInterface $dispatcher */
+        $dispatcher = $this->container->get('event_dispatcher');
+
+        $dispatcher->dispatch(EventNames::EXCEPTION_EVENT, $event);
+
+        if (!$event->getResponse()) {
+            //it is should filter exception in production mode!
+            throw $e;
+        }
+
+        return $event->getResponse();
+    }
+
+    /**
      * @return void
      */
-    private function addParamsToContainer()
+    protected function addParamsToContainer()
     {
         $config = $this->getConfiguration();
 
         $this->container->setParameter('db_config', $config['db']);
         $this->container->setParameter('routes_path', $config['routes']);
         $this->container->setParameter('view', $config['view']);
+        $this->container->setParameter('error_controllers', $config['error_controllers']);
     }
 }

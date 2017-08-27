@@ -24,10 +24,12 @@ class AddEventListenersCompilerPass implements CompilerPassInterface
 
         foreach ($evenListenersIds as $evenListenersId => $params) {
             $listenerInstance = $container->get($evenListenersId);
+            $priority = isset($params[0]['priority']) ? $params[0]['priority'] : 0;
 
             $eventDispatcher->addListener(
                 $params[0]['event'],
-                [$listenerInstance, $params[0]['method']]
+                [$listenerInstance, $params[0]['method']],
+                $priority
             );
         }
     }

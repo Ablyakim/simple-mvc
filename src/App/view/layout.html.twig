@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tasks</title>
+    {% block styles %}
+        <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Task manager</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% block content '' %}
+
+{% block js %}
+    <script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/vendor/knockout/dist/knockout.js"></script>
+{% endblock %}
+</body>
+</html>
