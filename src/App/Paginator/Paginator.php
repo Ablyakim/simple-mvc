@@ -38,6 +38,11 @@ class Paginator implements \IteratorAggregate
     protected $totalPagesCount;
 
     /**
+     * @var int
+     */
+    protected $totalResultCount;
+
+    /**
      * Paginator constructor.
      * @param QueryBuilder $queryBuilder
      * @param ConnectionProxy $db
@@ -158,11 +163,14 @@ class Paginator implements \IteratorAggregate
      */
     public function getTotalResultCount()
     {
-        $qb = clone $this->queryBuilder;
-        $qb->resetQueryPart('select');
-        $qb->addSelect('COUNT(id)');
+        if (null === $this->totalPagesCount) {
+            $qb = clone $this->queryBuilder;
+            $qb->resetQueryPart('select');
+            $qb->addSelect('COUNT(id)');
+            $this->totalResultCount = (int)$this->db->executeByQueryBuilder($qb)->fetchColumn();
+        }
 
-        return (int)$this->db->executeByQueryBuilder($qb)->fetchColumn();
+        return $this->totalResultCount;
     }
 
     /**
