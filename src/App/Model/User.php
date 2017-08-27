@@ -32,6 +32,7 @@ class User implements UserInterface
 
     /**
      * @param mixed $login
+     *
      * @return User
      */
     public function setLogin($login)

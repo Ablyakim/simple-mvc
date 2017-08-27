@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Container;
 
 use App\Model\FromConfigUserProvider;
@@ -9,6 +8,9 @@ use Framework\Di\CompilerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Class ServicesCompiler
+ */
 class ServicesCompiler implements CompilerInterface
 {
     /**

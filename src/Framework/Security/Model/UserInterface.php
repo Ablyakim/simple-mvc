@@ -33,6 +33,7 @@ interface UserInterface
 
     /**
      * @param string $passwordSalt
+     *
      * @return UserInterface
      */
     function setPasswordSalt($passwordSalt);

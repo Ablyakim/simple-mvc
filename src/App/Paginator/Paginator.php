@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Paginator;
-
 
 use Framework\Db\ConnectionProxy;
 use Framework\Db\Query\QueryBuilder;
@@ -124,6 +122,7 @@ class Paginator implements \IteratorAggregate
 
     /**
      * @param int $countOnPage
+     *
      * @return Paginator
      */
     public function setCountOnPage($countOnPage)
@@ -167,6 +166,7 @@ class Paginator implements \IteratorAggregate
             $qb = clone $this->queryBuilder;
             $qb->resetQueryPart('select');
             $qb->addSelect('COUNT(id)');
+
             $this->totalResultCount = (int)$this->db->executeByQueryBuilder($qb)->fetchColumn();
         }
 

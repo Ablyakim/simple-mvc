@@ -878,6 +878,7 @@ class QueryBuilder
      * @param $query
      * @param $limit
      * @param null $offset
+     *
      * @return string
      */
     private function modifyLimitQuery($query, $limit, $offset = null)

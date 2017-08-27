@@ -4,6 +4,9 @@ namespace App\Model;
 
 use Framework\Security\Model\UserProviderInterface;
 
+/**
+ * Class FromConfigUserProvider
+ */
 class FromConfigUserProvider implements UserProviderInterface
 {
     /**
