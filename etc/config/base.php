@@ -12,6 +12,14 @@ return [
         'port' => null,
     ],
 
+    'users' => [
+        [
+            'login' => 'admin',
+            'password' => '605bd1ca80ec1e63514e978e2abf423a',//encoded password real: 123
+            'password_salt' => '123456789',
+        ],
+    ],
+
     //path to routes collection
     'routes' => __DIR__ . '/routes.php',
 

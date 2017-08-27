@@ -12,6 +12,7 @@ use Framework\EventDispatcher\EventDispatcher;
 use Framework\EventNames;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class BaseContainerCompiler
@@ -29,6 +30,7 @@ class BaseContainerCompiler implements CompilerInterface
         $this->registerControllerListener($container);
         $this->registerDbConnection($container);
         $this->registerExceptionListener($container);
+        $this->registerSessionManager($container);
     }
 
     /**
@@ -50,7 +52,7 @@ class BaseContainerCompiler implements CompilerInterface
      */
     protected function registerExceptionListener(ContainerBuilder $container)
     {
-        $container->register('exception_listener', NoRouteListener::class)
+        $container->register('on_exception_listener', NoRouteListener::class)
             ->addArgument(new Reference('service_container'))
             ->addTag(
                 'event_listener',
@@ -101,5 +103,13 @@ class BaseContainerCompiler implements CompilerInterface
 
         $container->register('query_builder', QueryBuilder::class)
             ->addArgument(new Reference('db'));
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerSessionManager(ContainerBuilder $container)
+    {
+        $container->register('session', Session::class);
     }
 }

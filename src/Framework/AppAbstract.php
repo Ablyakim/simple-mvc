@@ -129,5 +129,6 @@ abstract class AppAbstract
         $this->container->setParameter('routes_path', $config['routes']);
         $this->container->setParameter('view', $config['view']);
         $this->container->setParameter('error_controllers', $config['error_controllers']);
+        $this->container->setParameter('users', $config['users']);
     }
 }

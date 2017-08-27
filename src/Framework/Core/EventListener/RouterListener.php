@@ -63,6 +63,7 @@ class RouterListener implements ContainerAwareInterface
         $context = new RequestContext();
         $context->fromRequest($requestEvent->getRequest());
         $matcher = new UrlMatcher($routeCollection, $context);
+
         try {
             $parameters = $matcher->matchRequest($request);
             $response = $this->callControllerByParams($parameters, $request);

@@ -3,6 +3,7 @@
 
 namespace App\Container;
 
+use App\Model\FromConfigUserProvider;
 use App\Repository\TaskRepository;
 use Framework\Di\CompilerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,5 +18,8 @@ class ServicesCompiler implements CompilerInterface
     {
         $container->register('task_repository', TaskRepository::class)
             ->addArgument(new Reference('db'));
+
+        $container->register('user_provider', FromConfigUserProvider::class)
+            ->addArgument('%users%');
     }
 }
