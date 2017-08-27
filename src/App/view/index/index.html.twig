@@ -1,41 +1,45 @@
 {% extends 'layout.html.twig' %}
 
-{% macro link(field) %}
-    {{ field }}
-{% endmacro %}
-
 {% block content %}
-    {% macro foo() %}
-        11
-    {% endmacro %}
     <div class="container">
         <h1>List of tasks</h1>
         <div class="row">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    {% for header, link in headers %}
-                        <th>
-                            {% if link %}
-                                <a href="{{ link }}">{{ header }}</a>
-                            {% else %}
-                                {{ header }}
-                            {% endif %}
-                        </th>
-                    {% endfor %}
-                </tr>
-                </thead>
-                <tbody>
-                {% for task in paginator %}
+            <a class="btn btn-success pull-right" href="/task/create">Create task</a>
+            {% if paginator.totalResultCount %}
+                <table class="table table-bordered" style="margin-top: 40px">
+                    <thead>
                     <tr>
-                        <td>{{ task.username }}</td>
-                        <td>{{ task.email }}</td>
-                        <td>{{ task.status }}</td>
+                        {% for header, link in headers %}
+                            <th>
+                                {% if link %}
+                                    <a href="{{ link }}">{{ header }}</a>
+                                {% else %}
+                                    {{ header }}
+                                {% endif %}
+                            </th>
+                        {% endfor %}
+                        <th>Actions</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {{ paginatorPages|raw }}
+                    </thead>
+                    <tbody>
+                    {% for task in paginator %}
+                        <tr>
+                            <td>{{ task.username }}</td>
+                            <td>{{ task.email }}</td>
+                            <td>{{ task.status }}</td>
+                            <td>
+                                {% if auth_manager.loggedIn %}
+                                    <a href="/task/edit/{{ task.id }}">Edit task</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {{ paginatorPages|raw }}
+            {% else %}
+                <h3 style="margin-top: 40px">Tasks not found</h3>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

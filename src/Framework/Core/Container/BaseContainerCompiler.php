@@ -88,7 +88,8 @@ class BaseContainerCompiler implements CompilerInterface
             ->addArgument($viewParams['template_dir']);
 
         $container->register('twig.env', \Twig_Environment::class)
-            ->addArgument(new Reference('twig.loader_file_system'));
+            ->addArgument(new Reference('twig.loader_file_system'))
+            ->addMethodCall('addGlobal', ['auth_manager', new Reference('auth_manager')]);
         //enable in production mode
 //            ->addArgument(['cache' => $viewParams['cache_dir']]);
     }

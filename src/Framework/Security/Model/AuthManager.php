@@ -79,6 +79,8 @@ class AuthManager
             if (!$user) {
                 throw new UserNotFoundException();
             }
+
+            $this->user = $user;
         } catch (\Exception $e) {
             throw AccessDenyException::createFromOriginalException($e);
         }

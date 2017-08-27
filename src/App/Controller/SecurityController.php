@@ -25,6 +25,16 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @return RedirectResponse
+     */
+    public function logoutAction()
+    {
+        $this->getAuthManager()->logout();
+
+        return new RedirectResponse('/');
+    }
+
+    /**
      * @param Request $request
      *
      * @return Response

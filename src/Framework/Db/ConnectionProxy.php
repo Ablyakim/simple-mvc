@@ -128,7 +128,6 @@ class ConnectionProxy implements ConnectionInterface, DriverInterface
      */
     public function executeQuery($query, array $params = [], $types = [])
     {
-
         $connection = $this->getConnection();
 
         try {
@@ -151,7 +150,7 @@ class ConnectionProxy implements ConnectionInterface, DriverInterface
             throw new \LogicException($ex);
         }
 
-        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $stmt->setFetchMode($this->defaultFetchMode);
 
         return $stmt;
     }

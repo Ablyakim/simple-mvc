@@ -66,6 +66,9 @@ class RouterListener implements ContainerAwareInterface
 
         try {
             $parameters = $matcher->matchRequest($request);
+
+            $request->attributes->add($parameters);
+
             $response = $this->callControllerByParams($parameters, $request);
 
             if (!$response instanceof Response) {

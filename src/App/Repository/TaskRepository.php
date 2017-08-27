@@ -13,6 +13,21 @@ use Framework\Db\Query\QueryBuilder;
 class TaskRepository
 {
     /**
+     * @var array
+     */
+    protected $allowedFieldsToSave = [
+        'username',
+        'email',
+        'status',
+        'content'
+    ];
+
+    /**
+     * @var string
+     */
+    protected $taskTableName = 'task';
+
+    /**
      * @var ConnectionProxy
      */
     protected $db;
@@ -34,7 +49,7 @@ class TaskRepository
         $qb = new QueryBuilder();
 
         $qb->select('*')
-            ->from('task');
+            ->from($this->taskTableName);
 
         return $qb;
     }
@@ -59,5 +74,63 @@ class TaskRepository
             ->setCurrentPage($page);
 
         return $paginator;
+    }
+
+    /**
+     * @param $taskData
+     *
+     * @return bool
+     */
+    public function save($taskData)
+    {
+        $qb = new QueryBuilder();
+
+        $taskData['status'] = (int)(!empty($taskData['status']));
+
+        if (!empty($taskData['id'])) {
+            foreach ($this->allowedFieldsToSave as $field) {
+                if (isset($taskData[$field])) {
+                    //set values in this way to avoid SQL injection
+                    $qb->set($field, ':' . $field)
+                        ->setParameter($field, $taskData[$field]);
+                }
+            }
+
+            $qb->where('id = :id')
+                ->setParameter('id', $taskData['id']);
+
+            $qb->update($this->taskTableName);
+        } else {
+            foreach ($this->allowedFieldsToSave as $field) {
+                if (isset($taskData[$field])) {
+                    //set values in this way to avoid SQL injection
+                    $qb->setValue($field, ':' . $field)
+                        ->setParameter($field, $taskData[$field]);
+                }
+            }
+
+            $qb->insert($this->taskTableName);
+        }
+
+        $stmt = $this->db->prepare($qb->getSQL());
+
+        return $stmt->execute($qb->getParameters());
+    }
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function loadById($id)
+    {
+        $qb = new QueryBuilder();
+
+        $qb->select('*')
+            ->from($this->taskTableName)
+            ->where('id = :id')
+            ->setParameter('id', $id);
+
+        return $this->db->executeByQueryBuilder($qb)->fetch();
     }
 }
