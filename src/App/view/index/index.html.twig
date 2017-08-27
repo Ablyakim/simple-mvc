@@ -1,39 +1,41 @@
 {% extends 'layout.html.twig' %}
 
+{% macro link(field) %}
+    {{ field }}
+{% endmacro %}
+
 {% block content %}
+    {% macro foo() %}
+        11
+    {% endmacro %}
     <div class="container">
         <h1>List of tasks</h1>
         <div class="row">
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
+                    {% for header, link in headers %}
+                        <th>
+                            {% if link %}
+                                <a href="{{ link }}">{{ header }}</a>
+                            {% else %}
+                                {{ header }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                </tr>
+                {% for task in paginator %}
+                    <tr>
+                        <td>{{ task.username }}</td>
+                        <td>{{ task.email }}</td>
+                        <td>{{ task.status }}</td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
+            {{ paginatorPages|raw }}
         </div>
     </div>
 {% endblock %}
