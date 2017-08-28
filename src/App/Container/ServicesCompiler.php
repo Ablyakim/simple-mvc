@@ -4,6 +4,7 @@ namespace App\Container;
 
 use App\Model\FromConfigUserProvider;
 use App\Model\Uploader;
+use App\Repository\ImageRepository;
 use App\Repository\TaskRepository;
 use Framework\Di\CompilerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,6 +21,9 @@ class ServicesCompiler implements CompilerInterface
     public function compile(ContainerBuilder $container)
     {
         $container->register('task_repository', TaskRepository::class)
+            ->addArgument(new Reference('db'));
+
+        $container->register('image_repository', ImageRepository::class)
             ->addArgument(new Reference('db'));
 
         $container->register('user_provider', FromConfigUserProvider::class)

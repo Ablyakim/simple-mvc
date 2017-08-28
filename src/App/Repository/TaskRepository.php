@@ -3,13 +3,12 @@
 namespace App\Repository;
 
 use App\Paginator\Paginator;
-use Framework\Db\ConnectionProxy;
 use Framework\Db\Query\QueryBuilder;
 
 /**
  * Class TaskRepository
  */
-class TaskRepository
+class TaskRepository extends AbstractRepository
 {
     /**
      * @var array
@@ -18,27 +17,9 @@ class TaskRepository
         'username',
         'email',
         'status',
-        'content'
+        'content',
+        'image_id'
     ];
-
-    /**
-     * @var string
-     */
-    protected $taskTableName = 'task';
-
-    /**
-     * @var ConnectionProxy
-     */
-    protected $db;
-
-    /**
-     * TaskRepository constructor.
-     * @param ConnectionProxy $db
-     */
-    public function __construct(ConnectionProxy $db)
-    {
-        $this->db = $db;
-    }
 
     /**
      * @return QueryBuilder
@@ -48,7 +29,7 @@ class TaskRepository
         $qb = new QueryBuilder();
 
         $qb->select('*')
-            ->from($this->taskTableName);
+            ->from($this->getTableName());
 
         return $qb;
     }
@@ -78,42 +59,23 @@ class TaskRepository
     /**
      * @param $taskData
      *
-     * @return bool
+     * @return bool|int
      */
     public function save($taskData)
     {
-        $qb = new QueryBuilder();
-
         $taskData['status'] = (int)(!empty($taskData['status']));
 
+        $qb = new QueryBuilder();
+
         if (!empty($taskData['id'])) {
-            foreach ($this->allowedFieldsToSave as $field) {
-                if (isset($taskData[$field])) {
-                    //set values in this way to avoid SQL injection
-                    $qb->set($field, ':' . $field)
-                        ->setParameter($field, $taskData[$field]);
-                }
-            }
 
             $qb->where('id = :id')
                 ->setParameter('id', $taskData['id']);
 
-            $qb->update($this->taskTableName);
+            return $this->updateData($qb, $taskData);
         } else {
-            foreach ($this->allowedFieldsToSave as $field) {
-                if (isset($taskData[$field])) {
-                    //set values in this way to avoid SQL injection
-                    $qb->setValue($field, ':' . $field)
-                        ->setParameter($field, $taskData[$field]);
-                }
-            }
-
-            $qb->insert($this->taskTableName);
+            return $this->insertData($qb, $taskData);
         }
-
-        $stmt = $this->db->prepare($qb->getSQL());
-
-        return $stmt->execute($qb->getParameters());
     }
 
     /**
@@ -126,10 +88,26 @@ class TaskRepository
         $qb = new QueryBuilder();
 
         $qb->select('*')
-            ->from($this->taskTableName)
+            ->from($this->getTableName())
             ->where('id = :id')
             ->setParameter('id', $id);
 
         return $this->db->executeByQueryBuilder($qb)->fetch();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllowedFieldsToSave()
+    {
+        return $this->allowedFieldsToSave;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTableName()
+    {
+        return 'task';
     }
 }
