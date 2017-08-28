@@ -2,9 +2,8 @@
 
 namespace Framework\Db\Driver;
 
-
 /**
- * Class Connection
+ * Class MysqlDriver
  */
 class MysqlDriver extends \PDO implements DriverInterface
 {

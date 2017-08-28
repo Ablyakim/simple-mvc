@@ -1,10 +1,12 @@
 <?php
 
-
 namespace App\Model;
 
 use Framework\Security\Model\UserInterface;
 
+/**
+ * Class User
+ */
 class User implements UserInterface
 {
     /**

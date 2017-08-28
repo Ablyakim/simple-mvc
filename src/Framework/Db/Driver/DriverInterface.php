@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Db\Driver;
 
 /**
@@ -8,7 +7,6 @@ namespace Framework\Db\Driver;
  */
 interface DriverInterface
 {
-
     /**
      * Prepares a statement for execution and returns a Statement object.
      *

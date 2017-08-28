@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Security\EventListener;
 
 use Framework\Core\Controller\ControllerCallerTrait;
@@ -38,6 +37,9 @@ class AccessDenyListener implements ContainerAwareInterface
         return $this->container;
     }
 
+    /**
+     * @param ExceptionEvent $exceptionEvent
+     */
     public function onAccessDeny(ExceptionEvent $exceptionEvent)
     {
         if ($exceptionEvent->getResponse() || !$exceptionEvent->getException() instanceof AccessDenyException) {

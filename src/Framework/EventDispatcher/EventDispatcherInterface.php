@@ -1,9 +1,10 @@
 <?php
 
-
 namespace Framework\EventDispatcher;
 
-
+/**
+ * Interface EventDispatcherInterface
+ */
 interface EventDispatcherInterface
 {
     /**
@@ -12,7 +13,7 @@ interface EventDispatcherInterface
      *
      * @return mixed
      */
-    public function dispatch($eventName, Event $event = null);
+    function dispatch($eventName, Event $event = null);
 
     /**
      * @param $eventName
@@ -21,7 +22,7 @@ interface EventDispatcherInterface
      *
      * @return mixed
      */
-    public function addListener($eventName, $listener, $priority = 0);
+    function addListener($eventName, $listener, $priority = 0);
 
     /**
      * @param string $eventName

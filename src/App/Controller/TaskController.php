@@ -53,7 +53,7 @@ class TaskController extends AbstractController
 
         if ($taskRepository->save($taskData)) {
 
-            $this->getSession()->set('task/success-message', 'Task was successfully created');
+            $this->getSession()->set('task/success-message', 'Task was successfully created/update');
 
             if ($id) {
                 return new RedirectResponse('/task/edit/' . $request->get('id'));
@@ -62,17 +62,12 @@ class TaskController extends AbstractController
             }
         }
 
-        if ($id) {
-            return $this->render('task/edit.html.twig', [
-                'task' => $taskData,
-                'errorMessage' => 'Something went wrong'
-            ]);
-        } else {
-            return $this->render('task/create.html.twig', [
-                'task' => $taskData,
-                'errorMessage' => 'Something went wrong'
-            ]);
-        }
+        $template = $id ? 'task/edit.html.twig' : 'task/create.html.twig';
+
+        return $this->render($template, [
+            'task' => $taskData,
+            'errorMessage' => 'Something went wrong'
+        ]);
     }
 
     /**
@@ -170,6 +165,7 @@ class TaskController extends AbstractController
 
         /** @var Uploader $uploader */
         $uploader = $this->container->get('uploader');
+
         return $uploader->upload($request->files->get('file'), $isTmpFile);
     }
 }

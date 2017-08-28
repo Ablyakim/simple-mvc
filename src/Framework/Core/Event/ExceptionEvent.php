@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ExceptionEvent
- * Event handler should handle exception and return some response
  */
 class ExceptionEvent extends Event
 {

@@ -15,9 +15,10 @@
             {% include 'task/form.html.twig' %}
             <button class="btn-success btn" type="submit">Save</button>
         </form>
-        <hr>
-        <h2>Uploaded file</h2>
+
         {% if task.image %}
+            <hr>
+            <h2>Uploaded file</h2>
             <img src="/{{ task.image }}" alt="">
         {% endif %}
     </div>

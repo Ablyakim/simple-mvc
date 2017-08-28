@@ -1,11 +1,12 @@
 <?php
 
-
 namespace Framework\Security\Util;
-
 
 use Framework\Security\Model\UserInterface;
 
+/**
+ * Class PasswordEncoder
+ */
 class PasswordEncoder implements PasswordEncoderInterface
 {
     /**

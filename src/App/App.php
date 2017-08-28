@@ -1,8 +1,12 @@
 <?php
+
 namespace App;
 
 use Framework\AppAbstract;
 
+/**
+ * Class App
+ */
 class App extends AppAbstract
 {
     /**

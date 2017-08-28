@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Core\Controller;
 
 use Framework\Security\Exception\AccessDenyException;
@@ -33,7 +32,7 @@ class AbstractController
      */
     protected function getAuthManager()
     {
-        return $this->container->get('auth_manager');;
+        return $this->container->get('auth_manager');
     }
 
     /**
@@ -49,7 +48,6 @@ class AbstractController
      */
     protected function checkAccess()
     {
-
         $this->getAuthManager()->authenticate();
     }
 

@@ -1,10 +1,12 @@
 <?php
 
-
 namespace Framework\Core\Route;
 
 use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * Class RouterLoader
+ */
 class RouterLoader
 {
     /**

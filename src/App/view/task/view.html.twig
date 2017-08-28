@@ -9,9 +9,9 @@
             <strong>Status</strong> - {{ task.status }} <br>
             <strong>Content</strong> - {{ task.content }} <br>
         </div>
-        <hr>
-        <h2>Uploaded file</h2>
         {% if task.image %}
+            <hr>
+            <h2>Uploaded file</h2>
             <img src="/{{ task.image }}" alt="">
         {% endif %}
     </div>

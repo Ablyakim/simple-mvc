@@ -1,13 +1,14 @@
 <?php
 
-
 namespace Framework\Core\Event;
-
 
 use Framework\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class RequestEvent
+ */
 class RequestEvent extends Event
 {
     /**

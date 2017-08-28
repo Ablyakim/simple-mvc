@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use Framework\Core\Controller\AbstractController;
@@ -51,6 +50,7 @@ class SecurityController extends AbstractController
         } catch (AccessDenyException $e) {
             $this->getSession()->set('auth/last-error', 'Your login or password do not match.');
             $this->getSession()->set('auth/last-login', $login);
+
             throw $e;
         }
 

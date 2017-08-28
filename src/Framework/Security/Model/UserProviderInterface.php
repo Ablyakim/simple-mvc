@@ -12,5 +12,5 @@ interface UserProviderInterface
      *
      * @return UserInterface|null
      */
-    public function getUserByLogin($login);
+    function getUserByLogin($login);
 }

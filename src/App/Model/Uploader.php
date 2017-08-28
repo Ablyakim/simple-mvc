@@ -7,6 +7,9 @@ use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Class Uploader
+ */
 class Uploader
 {
     /**
@@ -25,13 +28,13 @@ class Uploader
 
     /**
      * @param UploadedFile $file
-     * @param bool $temporaryFile
+     * @param bool $fileIsTmp
      *
      * @return array
      */
-    public function upload(UploadedFile $file, $temporaryFile = false)
+    public function upload(UploadedFile $file, $fileIsTmp = false)
     {
-        $data = $this->move($file, $temporaryFile);
+        $data = $this->move($file, $fileIsTmp);
 
         return $data;
     }
@@ -48,26 +51,27 @@ class Uploader
 
     /**
      * @param UploadedFile $file
-     * @param bool $temporaryFile
+     * @param bool $fileIsTmp
      *
      * @return array
      *
      * @throws \Exception
      */
-    protected function move(UploadedFile $file, $temporaryFile = false)
+    protected function move(UploadedFile $file, $fileIsTmp = false)
     {
         if (!$file->isValid()) {
             throw new \Exception('File not valid');
         }
 
-        $this->ensureAllowedExtension($file);
+        $this->ensureExtensionIsAllowed($file);
+
         //move to config
         $neededWidth = 320;
         $neededHeight = 240;
 
         $fileName = md5(microtime());
 
-        $target = $this->generatePath($fileName, $temporaryFile);
+        $target = $this->generatePath($fileName, $fileIsTmp);
 
         $res = array(
             'mimeType' => $file->getMimeType(),
@@ -87,7 +91,7 @@ class Uploader
 
         if ($neededWidth > $width && $neededHeight > $height) {
             if (!$file->move($fullFileName)) {
-                throw new \Exception(sprintf('Error move file', $target[1]));
+                throw new \Exception(sprintf('Error moving file', $target[1]));
             }
         } else {
             $this->resizeBeforeMove($file, $fullFileName, $neededWidth, $neededHeight);
@@ -131,7 +135,7 @@ class Uploader
      *
      * @throws \Exception
      */
-    protected function ensureAllowedExtension(UploadedFile $file)
+    protected function ensureExtensionIsAllowed(UploadedFile $file)
     {
         if (!in_array($file->guessExtension(), ['jpg', 'jpeg', 'png'])) {
             throw new \Exception(sprintf('Extension "%s" is not allowed', $file->guessExtension()));
@@ -140,15 +144,15 @@ class Uploader
 
     /**
      * @param $fileName
-     * @param bool $temporaryFile
+     * @param bool $fileIsTmp
      *
      * @return array
      */
-    protected function generatePath($fileName, $temporaryFile)
+    protected function generatePath($fileName, $fileIsTmp)
     {
         $dir = substr($fileName, 0, 2) . '/' . substr($fileName, 2, 2);
 
-        if ($temporaryFile) {
+        if ($fileIsTmp) {
             $dir .= '/tmp';
         }
 

@@ -934,7 +934,9 @@ class QueryBuilder
      */
     private function getUpdateSQL()
     {
-        $table = $this->sqlParts['from']['table'] . ($this->sqlParts['from']['alias'] ? ' ' . $this->sqlParts['from']['alias'] : '');
+        $table = $this->sqlParts['from']['table'] . ($this->sqlParts['from']['alias'] ? ' '
+                . $this->sqlParts['from']['alias'] : '');
+
         $query = 'UPDATE ' . $table
             . ' SET ' . implode(", ", $this->sqlParts['set'])
             . ($this->sqlParts['where'] !== null ? ' WHERE ' . ((string)$this->sqlParts['where']) : '');
@@ -949,8 +951,10 @@ class QueryBuilder
      */
     private function getDeleteSQL()
     {
-        $table = $this->sqlParts['from']['table'] . ($this->sqlParts['from']['alias'] ? ' ' . $this->sqlParts['from']['alias'] : '');
-        $query = 'DELETE FROM ' . $table . ($this->sqlParts['where'] !== null ? ' WHERE ' . ((string)$this->sqlParts['where']) : '');
+        $table = $this->sqlParts['from']['table']
+            . ($this->sqlParts['from']['alias'] ? ' ' . $this->sqlParts['from']['alias'] : '');
+        $query = 'DELETE FROM ' . $table . ($this->sqlParts['where'] !== null ? ' WHERE '
+                . ((string)$this->sqlParts['where']) : '');
 
         return $query;
     }

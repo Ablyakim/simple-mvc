@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Security\Container;
 
 use Framework\Di\CompilerInterface;

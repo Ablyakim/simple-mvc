@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Interface CompilerInterface
- * @package Framework\Di
  */
 interface CompilerInterface
 {
@@ -17,5 +16,5 @@ interface CompilerInterface
      *
      * @return void
      */
-    public function compile(ContainerBuilder $container);
+    function compile(ContainerBuilder $container);
 }

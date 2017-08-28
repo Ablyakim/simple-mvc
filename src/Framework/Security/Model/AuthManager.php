@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Security\Model;
 
 use Framework\Security\Exception\AccessDenyException;
@@ -10,6 +9,9 @@ use Framework\Security\Exception\WrongPasswordException;
 use Framework\Security\Util\PasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class AuthManager
+ */
 class AuthManager
 {
     const LOGIN_IN_SESSION_KEY = 'security/login';

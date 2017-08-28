@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Db;
 
 use Framework\Db\Driver\DriverInterface;
@@ -41,7 +40,7 @@ class ConnectionProxy implements ConnectionInterface, DriverInterface
     /**
      * @inheritDoc
      */
-    function prepare($prepareString)
+    public function prepare($prepareString)
     {
         return $this->getConnection()->prepare($prepareString);
     }
@@ -49,7 +48,7 @@ class ConnectionProxy implements ConnectionInterface, DriverInterface
     /**
      * @inheritDoc
      */
-    function query()
+    public function query()
     {
         return call_user_func_array([$this->getConnection(), 'query'], func_get_args());
     }
@@ -57,7 +56,7 @@ class ConnectionProxy implements ConnectionInterface, DriverInterface
     /**
      * @inheritDoc
      */
-    function quote($input, $type = \PDO::PARAM_STR)
+    public function quote($input, $type = \PDO::PARAM_STR)
     {
         return $this->getConnection()->quote($input, $type);
     }
@@ -65,7 +64,7 @@ class ConnectionProxy implements ConnectionInterface, DriverInterface
     /**
      * @inheritDoc
      */
-    function exec($statement)
+    public function exec($statement)
     {
         return $this->getConnection()->exec($statement);
     }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\Core\Container;
 
 use Framework\EventDispatcher\EventDispatcher;

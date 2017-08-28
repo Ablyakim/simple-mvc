@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Framework\EventDispatcher;
 
 /**
@@ -8,8 +7,14 @@ namespace Framework\EventDispatcher;
  */
 class EventDispatcher implements EventDispatcherInterface
 {
+    /**
+     * @var array
+     */
     protected $listeners = [];
 
+    /**
+     * @var array
+     */
     protected $sortedListeners = [];
 
     /**
@@ -54,6 +59,5 @@ class EventDispatcher implements EventDispatcherInterface
         }
 
         return array_filter($this->sortedListeners);
-
     }
 }
