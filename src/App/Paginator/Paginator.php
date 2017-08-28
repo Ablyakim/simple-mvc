@@ -56,7 +56,8 @@ class Paginator implements \IteratorAggregate
      */
     public function getIterator()
     {
-        $results = $this->getSlice($this->getCurrentPage() - 1, $this->getCountOnPage());
+        $offset = ($this->getCurrentPage() - 1) * $this->getCountOnPage();
+        $results = $this->getSlice($offset, $this->getCountOnPage());
 
         if ($results instanceof \Iterator) {
             return $results;
