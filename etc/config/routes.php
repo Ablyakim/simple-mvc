@@ -40,6 +40,12 @@ $collection->add('task_edit', new Route('/task/edit/{id}', array(
     'action' => 'edit'
 )));
 
+$collection->add('task_done', new Route('/task/done/{id}', array(
+    '_controller' => TaskController::class,
+    'action' => 'done',
+    'method' => 'POST'
+)));
+
 $collection->add('task_preview', new Route('/task/preview', array(
     '_controller' => TaskController::class,
     'action' => 'preview',

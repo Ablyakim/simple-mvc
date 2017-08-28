@@ -1,7 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class="container">
+    <div class="container" id="task-list-container">
         <h1>List of tasks</h1>
         <div class="row">
             <a class="btn btn-success pull-right" href="/task/create">Create task</a>
@@ -18,7 +18,9 @@
                                 {% endif %}
                             </th>
                         {% endfor %}
-                        <th>Actions</th>
+                        {% if auth_manager.loggedIn %}
+                            <th>Actions</th>
+                        {% endif %}
                     </tr>
                     </thead>
                     <tbody>
@@ -29,7 +31,16 @@
                             <td>{{ task.status }}</td>
                             <td>
                                 {% if auth_manager.loggedIn %}
-                                    <a href="/task/edit/{{ task.id }}">Edit task</a>
+                                    <div class="btn-group" role="group">
+                                        <a class="btn btn-default" href="/task/edit/{{ task.id }}">Edit task</a>
+                                        {% if not task.status %}
+                                            <div
+                                                    class="btn btn-default"
+                                                    data-bind="visible: visible, click: mark.bind($root,'{{ task.id }}')"
+                                            >Mark as done
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 {% endif %}
                             </td>
                         </tr>
@@ -43,7 +54,6 @@
         </div>
     </div>
 {% endblock %}
-
 {% block js %}
     {{ parent() }}
     <script type="text/javascript" src="/js/index.js"></script>

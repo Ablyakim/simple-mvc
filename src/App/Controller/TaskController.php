@@ -123,6 +123,28 @@ class TaskController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function doneAction(Request $request)
+    {
+        $this->checkAccess();
+
+        /** @var TaskRepository $taskRepository */
+        $taskRepository = $this->container->get('task_repository');
+
+        $data = [
+            'id' => $request->get('id'),
+            'status' => 1
+        ];
+
+        $taskRepository->save($data);
+
+        return new Response('Ok');
+    }
+
+    /**
      * @return mixed
      */
     protected function getSuccessMessage()
