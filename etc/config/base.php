@@ -12,6 +12,10 @@ return [
         'port' => null,
     ],
 
+    'uploader' => [
+        'upload_dir' => ROOT_DIR . 'public/images'
+    ],
+
     'users' => [
         [
             'login' => 'admin',

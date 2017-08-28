@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\ImageController;
 use App\Controller\IndexController;
 use App\Controller\SecurityController;
 use App\Controller\TaskController;
@@ -37,6 +38,12 @@ $collection->add('task_create', new Route('/task/create', array(
 $collection->add('task_edit', new Route('/task/edit/{id}', array(
     '_controller' => TaskController::class,
     'action' => 'edit'
+)));
+
+$collection->add('task_preview', new Route('/task/preview', array(
+    '_controller' => TaskController::class,
+    'action' => 'preview',
+    'method' => 'POST'
 )));
 
 $collection->add(

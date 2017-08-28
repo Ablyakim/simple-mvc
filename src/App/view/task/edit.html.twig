@@ -13,6 +13,10 @@
 
         <form action="/task/save/{{ task.id }}" method="post">
             {% include 'task/form.html.twig' %}
+            <button class="btn-success btn" type="submit">Save</button>
         </form>
+        {% if task.image %}
+            <img src="/{{ task.image }}" alt="">
+        {% endif %}
     </div>
 {% endblock %}

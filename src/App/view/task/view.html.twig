@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h1>View task</h1>
+        <div class="row">
+            <strong>Username</strong> - {{ task.username }} <br>
+            <strong>Email</strong> - {{ task.email }} <br>
+            <strong>Status</strong> - {{ task.status }} <br>
+            <strong>Content</strong> - {{ task.content }} <br>
+        </div>
+        {% if task.image %}
+            <img src="/{{ task.image }}" alt="">
+        {% endif %}
+    </div>
+{% endblock %}

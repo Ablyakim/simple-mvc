@@ -1,7 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class="container">
+    <div class="container" id="task-form-container">
         <h1>Create task</h1>
         {% if errorMessage %}
             <div class="alert alert-danger" role="alert">{{ errorMessage }}</div>
@@ -11,8 +11,24 @@
             <div class="alert alert-success" role="alert">{{ successMessage }}</div>
         {% endif %}
 
-        <form action="/task/save" method="post">
+        <form action="/task/save" method="post" id="create-task-form" enctype="multipart/form-data">
             {% include 'task/form.html.twig' %}
+            <div class="form-group">
+                <label class="btn btn-primary btn-file" data-bind="visible: !imageSrc()">
+                    Choice file <input id="file" name="file" type="file" data-bind="fileInput: fileData"
+                                       accept=".jpg,.gif,.png,.jpeg">
+                </label>
+                <img style="width: 150px;" data-bind="attr: { src: imageSrc }, visible: imageSrc()">
+                <div class="btn btn-danger" data-bind="click: clear, visible: imageSrc()">Clear image</div>
+            </div>
+
+            <button class="btn-success btn" type="submit">Save</button>
+            <div data-bind="click: preview" class="btn btn-success">Preview</div>
         </form>
     </div>
+{% endblock %}
+{% block js %}
+    {{ parent() }}
+    <script type="text/javascript" src="/vendor/knockout-file-bindings/knockout-file-bindings.js"></script>
+    <script type="text/javascript" src="/js/task-form.js"></script>
 {% endblock %}

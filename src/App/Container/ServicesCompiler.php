@@ -3,6 +3,7 @@
 namespace App\Container;
 
 use App\Model\FromConfigUserProvider;
+use App\Model\Uploader;
 use App\Repository\TaskRepository;
 use Framework\Di\CompilerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,5 +24,8 @@ class ServicesCompiler implements CompilerInterface
 
         $container->register('user_provider', FromConfigUserProvider::class)
             ->addArgument('%users%');
+
+        $container->register('uploader', Uploader::class)
+            ->addArgument('%uploader_params%');
     }
 }

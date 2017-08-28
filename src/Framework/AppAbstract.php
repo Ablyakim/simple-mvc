@@ -130,5 +130,6 @@ abstract class AppAbstract
         $this->container->setParameter('view', $config['view']);
         $this->container->setParameter('error_controllers', $config['error_controllers']);
         $this->container->setParameter('users', $config['users']);
+        $this->container->setParameter('uploader_params', $config['uploader']);
     }
 }

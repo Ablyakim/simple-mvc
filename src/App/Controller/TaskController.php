@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Uploader;
 use App\Repository\TaskRepository;
 use Framework\Core\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -79,6 +80,28 @@ class TaskController extends AbstractController
             'successMessage' => $this->getSuccessMessage(),
             'task' => $taskRepository->loadById($request->get('id'))
         ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function previewAction(Request $request)
+    {
+        $taskData = $request->request->all();
+
+        if ($request->files->all()) {
+            /** @var Uploader $uploader */
+            $uploader = $this->container->get('uploader');
+            $image = $uploader->upload($request->files->get('file'), true);
+
+            if (!empty($image)) {
+                $taskData['image'] = $uploader->getWebUrlOfImage($image);
+            }
+        }
+
+        return $this->render('task/view.html.twig', ['task' => $taskData]);
     }
 
     /**
