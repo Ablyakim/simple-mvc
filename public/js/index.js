@@ -1,19 +1,27 @@
 $(function () {
+    var ViewModel = function (params) {
+        this.params = params;
 
-    var ViewModel = function () {
-        this.visible = ko.observable(true);
+        this.checked = ko.observable(Boolean(params.status));
     };
 
-    ViewModel.prototype.mark = function (taskId) {
-        $.post('/task/done/' + taskId, {}, function () {
+    ViewModel.prototype.doneTask = function () {
 
-        }.bind(this)).fail(function () {
-            alert("error");
-            this.visible(true);
-        }.bind(this));
+        if (this.checked() || !this.params.loggedIn) {
+            return;
+        }
 
-        this.visible(false);
+        $.post('/task/done/' + this.params.id, {})
+            .fail(function () {
+                    alert("error");
+                    this.checked(false);
+                }.bind(this)
+            );
+
+        this.checked(true);
     };
 
-    ko.applyBindings(new ViewModel(), $('#task-list-container')[0]);
+    window.taskItemsData.forEach(function (taskItem) {
+        ko.applyBindings(new ViewModel(taskItem), $(taskItem.selector)[0]);
+    });
 });

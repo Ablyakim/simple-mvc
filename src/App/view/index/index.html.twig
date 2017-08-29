@@ -1,6 +1,9 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
+    <script type="text/javascript">
+        window.taskItemsData = [];
+    </script>
     <div class="container" id="task-list-container">
         <h1>List of tasks</h1>
         <div class="row">
@@ -23,23 +26,32 @@
                     </thead>
                     <tbody>
                     {% for task in paginator %}
-                        <tr>
+                        <tr id="task-{{ task.id }}">
                             <td>{{ task.username }}</td>
                             <td>{{ task.email }}</td>
-                            <td>{{ task.status }}</td>
+                            <td>
+                                <i data-bind="visible: checked()" style="display: none; font-size: 20px;color: green"
+                                   class="fa fa-check-square-o fa-5"></i>
+
+                                <i data-bind="click: doneTask, visible: !checked()"
+                                   style="cursor: pointer; display: none; font-size: 20px;"
+                                   class="fa fa-square-o fa-5"></i>
+                            </td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <a class="btn btn-default" href="/task/edit/{{ task.id }}">Edit task</a>
-                                    {% if not task.status and auth_manager.loggedIn %}
-                                        <div
-                                                class="btn btn-default"
-                                                data-bind="visible: visible, click: mark.bind($root,'{{ task.id }}')"
-                                        >Mark as done
-                                        </div>
-                                    {% endif %}
                                 </div>
                             </td>
                         </tr>
+
+                        <script type="text/javascript">
+                            window.taskItemsData.push({
+                                id: "{{ task.id }}",
+                                status: {{ task.status }},
+                                loggedIn: Boolean("{{ auth_manager.loggedIn }}"),
+                                selector: "#task-{{ task.id }}"
+                            });
+                        </script>
                     {% endfor %}
                     </tbody>
                 </table>
