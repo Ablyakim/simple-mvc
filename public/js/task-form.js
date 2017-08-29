@@ -4,6 +4,12 @@ $(function () {
         this.imageData = null;
         this.imageSrc = ko.observable();
 
+        this.taskData = {
+            username: ko.observable(window.taskData.username),
+            email: ko.observable(window.taskData.email),
+            content: ko.observable(window.taskData.content)
+        };
+
         this.fileData = ko.observable({
             dataURL: ko.observable()
         });
@@ -24,30 +30,7 @@ $(function () {
     };
 
     ViewModel.prototype.preview = function () {
-        var formFields = $('#create-task-form').serializeArray();
-
-        var clForm = $('<form>', {
-            'style': 'display:none;position: fixed; left: -10000px',
-            'target': '_blank',
-            'action': '/task/preview',
-            'method': 'POST',
-            'enctype': 'multipart/form-data'
-        });
-
-        formFields.forEach(function (field) {
-            var el = $('<input>', {
-                'value': field.value,
-                'name': field.name
-            });
-            clForm.append(el);
-        });
-
-        $('body').append(clForm);
-
-        clForm.append($('#file').clone());
-
-        clForm.submit();
-        clForm.remove();
+        $('#task-preview-modal').modal('show');
     };
 
     ko.applyBindings(new ViewModel(), $('#task-form-container')[0]);

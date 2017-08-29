@@ -46,12 +46,6 @@ $collection->add('task_done', new Route('/task/done/{id}', array(
     'method' => 'POST'
 )));
 
-$collection->add('task_preview', new Route('/task/preview', array(
-    '_controller' => TaskController::class,
-    'action' => 'preview',
-    'method' => 'POST'
-)));
-
 $collection->add(
     'task_save',
     new Route(

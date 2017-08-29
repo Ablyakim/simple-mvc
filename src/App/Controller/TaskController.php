@@ -108,23 +108,6 @@ class TaskController extends AbstractController
      *
      * @return Response
      */
-    public function previewAction(Request $request)
-    {
-        $taskData = $request->request->all();
-        $image = $this->uploadFileIfExist($request, true);
-
-        if (!empty($image)) {
-            $taskData['image'] = $this->container->get('uploader')->getWebUrlOfImage($image);
-        }
-
-        return $this->render('task/view.html.twig', ['task' => $taskData]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function doneAction(Request $request)
     {
         $this->checkAccess();

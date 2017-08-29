@@ -1,0 +1,33 @@
+<div id="task-preview-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Username</th>
+                    <td data-bind="text: taskData.username"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td data-bind="text: taskData.email"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Content</th>
+                    <td data-bind="text: taskData.content"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div style="text-align: center">
+                <hr>
+                <img style="width: 400px;" data-bind="attr: { src: imageSrc }, visible: imageSrc()">
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>

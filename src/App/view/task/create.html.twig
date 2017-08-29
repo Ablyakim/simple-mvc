@@ -25,9 +25,16 @@
             <button class="btn-success btn" type="submit">Save</button>
             <div data-bind="click: preview" class="btn btn-success">Preview</div>
         </form>
+        {% include 'task/_preview_modal.html.twig' %}
     </div>
 {% endblock %}
 {% block js %}
+    <script>
+        window.taskData = {{ task|json_encode|raw }} ||
+        {
+        }
+        ;
+    </script>
     {{ parent() }}
     <script type="text/javascript" src="/vendor/knockout-file-bindings/knockout-file-bindings.js"></script>
     <script type="text/javascript" src="/js/task-form.js"></script>

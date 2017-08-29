@@ -23,18 +23,19 @@
 
 <div class="form-group">
     <label for="username">Username</label>
-    <input type="text" name="username" value="{{ task.username }}" class="form-control" id="username" required
+    <input data-bind="value: taskData.username" type="text" name="username" class="form-control" id="username" required
            placeholder="Username">
 </div>
 
 <div class="form-group">
     <label for="username">Email</label>
-    <input type="email" name="email" value="{{ task.email }}" class="form-control" id="username" required
+    <input data-bind="value: taskData.email" type="email" name="email" class="form-control" id="username" required
            placeholder="Email">
 </div>
 
 <div class="form-group">
     <label for="content">Content</label>
-    <textarea {{ auth_manager.loggedIn ? 'name="content"' : 'disabled' }} class="form-control"
-                                                                          id="content">{{ task.content }}</textarea>
+    <textarea data-bind="value: taskData.content" {{ auth_manager.loggedIn ? 'name="content"' : 'disabled' }}
+              class="form-control"
+              id="content">{{ task.content }}</textarea>
 </div>
