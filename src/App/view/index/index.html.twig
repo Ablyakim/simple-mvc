@@ -18,9 +18,7 @@
                                 {% endif %}
                             </th>
                         {% endfor %}
-                        {% if auth_manager.loggedIn %}
-                            <th>Actions</th>
-                        {% endif %}
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -30,18 +28,16 @@
                             <td>{{ task.email }}</td>
                             <td>{{ task.status }}</td>
                             <td>
-                                {% if auth_manager.loggedIn %}
-                                    <div class="btn-group" role="group">
-                                        <a class="btn btn-default" href="/task/edit/{{ task.id }}">Edit task</a>
-                                        {% if not task.status %}
-                                            <div
-                                                    class="btn btn-default"
-                                                    data-bind="visible: visible, click: mark.bind($root,'{{ task.id }}')"
-                                            >Mark as done
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-default" href="/task/edit/{{ task.id }}">Edit task</a>
+                                    {% if not task.status and auth_manager.loggedIn %}
+                                        <div
+                                                class="btn btn-default"
+                                                data-bind="visible: visible, click: mark.bind($root,'{{ task.id }}')"
+                                        >Mark as done
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}

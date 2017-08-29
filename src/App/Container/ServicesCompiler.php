@@ -6,6 +6,7 @@ use App\Model\FromConfigUserProvider;
 use App\Model\Uploader;
 use App\Repository\ImageRepository;
 use App\Repository\TaskRepository;
+use App\Validator\TaskValidator;
 use Framework\Di\CompilerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -31,5 +32,8 @@ class ServicesCompiler implements CompilerInterface
 
         $container->register('uploader', Uploader::class)
             ->addArgument('%uploader_params%');
+
+        $container->register('task_validator', TaskValidator::class)
+            ->addArgument(new Reference('auth_manager'));
     }
 }

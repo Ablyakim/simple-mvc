@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\Uploader;
 use App\Repository\ImageRepository;
 use App\Repository\TaskRepository;
+use App\Validator\TaskValidator;
 use Framework\Core\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,39 +35,43 @@ class TaskController extends AbstractController
     {
         $id = $request->get('id');
 
-        if ($id) {
-            $this->checkAccess();
-        }
+        /** @var TaskValidator $validator */
+        $validator = $this->container->get('task_validator');
 
         $taskData = array_merge($request->request->all(), ['id' => $id]);
 
-        /** @var TaskRepository $taskRepository */
-        $taskRepository = $this->container->get('task_repository');
+        $errors = $validator->validate($taskData);
 
-        $image = $this->uploadFileIfExist($request);
+        if (empty($errors)) {
+            /** @var TaskRepository $taskRepository */
+            $taskRepository = $this->container->get('task_repository');
 
-        if ($image) {
-            /** @var ImageRepository $imageRepository */
-            $imageRepository = $this->container->get('image_repository');
-            $taskData['image_id'] = $imageRepository->save($image);
-        }
+            $image = $this->uploadFileIfExist($request);
 
-        if ($taskRepository->save($taskData)) {
-
-            $this->getSession()->set('task/success-message', 'Task was successfully created/update');
-
-            if ($id) {
-                return new RedirectResponse('/task/edit/' . $request->get('id'));
-            } else {
-                return new RedirectResponse('/task/create');
+            if ($image) {
+                /** @var ImageRepository $imageRepository */
+                $imageRepository = $this->container->get('image_repository');
+                $taskData['image_id'] = $imageRepository->save($image);
             }
+
+            if ($taskRepository->save($taskData)) {
+                $this->getSession()->set('task/success-message', 'Task was successfully created/update');
+
+                if ($id) {
+                    return new RedirectResponse('/task/edit/' . $request->get('id'));
+                } else {
+                    return new RedirectResponse('/task/create');
+                }
+            }
+
+            $errors[] = 'Something went wrong';
         }
 
         $template = $id ? 'task/edit.html.twig' : 'task/create.html.twig';
 
         return $this->render($template, [
             'task' => $taskData,
-            'errorMessage' => 'Something went wrong'
+            'errorMessage' => join($errors, ', ')
         ]);
     }
 
@@ -77,8 +82,6 @@ class TaskController extends AbstractController
      */
     public function editAction(Request $request)
     {
-        $this->checkAccess();
-
         /** @var TaskRepository $taskRepository */
         $taskRepository = $this->container->get('task_repository');
         $taskData = $taskRepository->loadById($request->get('id'));

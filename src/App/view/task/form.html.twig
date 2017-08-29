@@ -32,15 +32,9 @@
     <input type="email" name="email" value="{{ task.email }}" class="form-control" id="username" required
            placeholder="Email">
 </div>
-{% if auth_manager.loggedIn %}
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" {% if task.status %}checked{% endif %} name="status" value="1"> Status
-        </label>
-    </div>
-{% endif %}
 
 <div class="form-group">
     <label for="content">Content</label>
-    <textarea name="content" class="form-control" id="content">{{ task.content }}</textarea>
+    <textarea {{ auth_manager.loggedIn ? 'name="content"' : 'disabled' }} class="form-control"
+                                                                          id="content">{{ task.content }}</textarea>
 </div>
