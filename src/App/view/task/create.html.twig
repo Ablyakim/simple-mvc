@@ -30,10 +30,7 @@
 {% endblock %}
 {% block js %}
     <script>
-        window.taskData = {{ task|json_encode|raw }} ||
-        {
-        }
-        ;
+        window.taskData = {{ task|json_encode|raw }} || {};
     </script>
     {{ parent() }}
     <script type="text/javascript" src="/vendor/knockout-file-bindings/knockout-file-bindings.js"></script>
